@@ -1,24 +1,13 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-const NOTIFY_TIMEOUT = 5000; //ms
+const NOTIFY_TIMEOUT = 5000;
 
 const promisesFormRef = document.querySelector('.form');
 
 promisesFormRef.addEventListener('submit', onPromisesFormSubmit);
 
-function onPromisesFormSubmit(event) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const formDataObj = {};
-  formData.forEach((value, key) => {
-    formDataObj[key] = Number(value);
-  });
-  // console.log(formDataObj);
-  createPromisesArray(formDataObj);
-}
-
-function createPromise(position, delay) {
+function createPromise(delay, position) {
   const shouldResolve = Math.random() > 0.3;
-  return new Promice((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
         // Fulfill
@@ -29,19 +18,16 @@ function createPromise(position, delay) {
       }
     }, delay);
   })
-    .then(value => Notify.success(value, { timeout: NOTIFY_TIMEOUT }))
-    .catch(error => Notify.failure(error, { timeout: NOTIFY_TIMEOUT }));
-}
-
-function onPromisesFormSubmit(event) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const formDataObj = {};
-  formData.forEach((value, key) => {
-    formDataObj[key] = Number(value);
-  });
-  // console.log(formDataObj);
-  createPromisesArray(formDataObj);
+    .then(value =>
+      Notify.success(value, {
+        timeout: NOTIFY_TIMEOUT,
+      })
+    )
+    .catch(error =>
+      Notify.failure(error, {
+        timeout: NOTIFY_TIMEOUT,
+      })
+    );
 }
 
 function createPromisesArray({ delay, step, amount }) {
@@ -49,7 +35,15 @@ function createPromisesArray({ delay, step, amount }) {
     { length: amount },
     (_, i) => delay + i * step
   );
-  // console.log(delaysArray);
   const promises = delaysArray.map(createPromise);
-  console.log(promises);
+}
+
+function onPromisesFormSubmit(evt) {
+  evt.preventDefault();
+  const formData = new FormData(evt.currentTarget);
+  const formDataObj = {};
+  formData.forEach((value, key) => {
+    formDataObj[key] = Number(value);
+  });
+  createPromisesArray(formDataObj);
 }

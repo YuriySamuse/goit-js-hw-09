@@ -1,6 +1,6 @@
 import flatpickr from 'flatpickr';
 import Notiflix from 'notiflix';
-// import { Countdown } from './countdown_timer.js';
+import { Countdown } from './countdown_timer.js';
 import 'flatpickr/dist/flatpickr.min.css';
 const NOTIFY_TIMEOUT = 5000; //ms
 
